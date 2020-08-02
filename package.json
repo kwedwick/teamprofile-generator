@@ -1,0 +1,35 @@
+{
+  "name": "teamprofile-generator",
+  "version": "1.0.0",
+  "description": "A node.js/inquirer application to create and sort employees by entering their information in the command line. This will then generate an HTML webpage using a pre-made CSS file to view your employees.",
+  "main": "Index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "inquirer": "^7.3.3",
+    "jest": "^26.2.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kwedwick/teamprofile-generator.git"
+  },
+  "keywords": [
+    "node",
+    "javscript",
+    "html",
+    "css",
+    "employee-generator",
+    "inquirer"
+  ],
+  "author": "kwedwick",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kwedwick/teamprofile-generator/issues"
+  },
+  "homepage": "https://github.com/kwedwick/teamprofile-generator#readme"
+}
