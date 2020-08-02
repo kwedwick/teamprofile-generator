@@ -14,6 +14,6 @@ test('calling employee.function', () => {
     expect(employee.getName()).toEqual(employee.name);
     expect(employee.getEmail()).toEqual(expect.stringContaining(employee.email.toString()));
     expect(employee.getId()).toEqual(expect.stringContaining(employee.id.toString()));
-    expect(employee.getRole()).toEqual(employee.role);
+    expect(employee.getRole()).toEqual('Employee');
 
 });
