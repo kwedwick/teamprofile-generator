@@ -83,8 +83,6 @@ function promptQuestions() {
                 createnewEmployee();
                 enterCreationLoop = confirmNewEmployee();
             }
-
-
         })
 }
 
