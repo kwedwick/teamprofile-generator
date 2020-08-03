@@ -4,13 +4,13 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-const generateHTML = require('./src/html-template')
+const generateHTML = require('./src/html-template');
 
 const group = {
     manager: {},
     engineers: [],
     interns: []
-}
+};
 
 function promptQuestions() {
     inquirer
@@ -56,7 +56,7 @@ function promptQuestions() {
                     if (emailInput) {
                         return true;
                     } else {
-                        console.log(" Please enter email address.");
+                        console.log(" Please enter an email address.");
                         return false;
                     }
                 }
@@ -78,13 +78,13 @@ function promptQuestions() {
             group.manager = new Manager(managerData.manager, managerData.id, managerData.email, managerData.officeNumber)
             console.log(group.manager.getRole());
             //generateHTML(group);
-            let enterCreationLoop = confirmNewEmployee();
+            var enterCreationLoop = confirmNewEmployee();
             while (enterCreationLoop) {
                 createnewEmployee();
                 enterCreationLoop = confirmNewEmployee();
             }
         })
-}
+};
 
 function createnewEmployee() {
     inquirer
@@ -100,7 +100,58 @@ function createnewEmployee() {
             if (employeeData.employeeType === 'Engineer') {
                 inquirer
                     .prompt([
-
+                        {
+                            type: 'input',
+                            name: 'engineer',
+                            message: 'Write name of the Engineer:',
+                            validate: nameInput => {
+                                if (nameInput) {
+                                    return true;
+                                } else {
+                                    console.log("Please enter Engineer's name.");
+                                    return false;
+                                }
+                            },
+                        },
+                        {
+                            type: 'number',
+                            name: 'id',
+                            message: 'Enter Id# only:',
+                            validate: idNumber => {
+                                if (idNumber) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter their Id number only.");
+                                    return false;
+                                }
+                            }
+                        },
+                        {
+                            type: 'input',
+                            name: 'email',
+                            message: 'Enter full email address:',
+                            validate: emailInput => {
+                                if (emailInput) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter an email address.");
+                                    return false;
+                                }
+                            }
+                        },
+                        {
+                            type: 'input',
+                            name: 'github',
+                            message: 'Enter their github username:',
+                            validate: githubInput => {
+                                if (githubInput) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter their github username.");
+                                    return false;
+                                }
+                            }
+                        },
                     ])
                     .then(engineerData => {
                         group.engineers.push(new Engineer(engineerData))
@@ -108,7 +159,58 @@ function createnewEmployee() {
             } else if (employeeData.employeeType === 'Intern') {
                 inquirer
                     .prompt([
-
+                        {
+                            type: 'input',
+                            name: 'manager',
+                            message: 'Write name of the Intern:',
+                            validate: nameInput => {
+                                if (nameInput) {
+                                    return true;
+                                } else {
+                                    console.log("Please enter Interns's name.");
+                                    return false;
+                                }
+                            },
+                        },
+                        {
+                            type: 'number',
+                            name: 'id',
+                            message: 'Enter Id# only:',
+                            validate: idNumber => {
+                                if (idNumber) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter their Id number only.");
+                                    return false;
+                                }
+                            }
+                        },
+                        {
+                            type: 'input',
+                            name: 'email',
+                            message: 'Enter full email address:',
+                            validate: emailInput => {
+                                if (emailInput) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter an email address.");
+                                    return false;
+                                }
+                            }
+                        },
+                        {
+                            type: 'input',
+                            name: 'school',
+                            message: "Enter Intern's school:",
+                            validate: schoolInput => {
+                                if (schoolInput) {
+                                    return true;
+                                } else {
+                                    console.log(" Please enter Intern's school.");
+                                    return false;
+                                }
+                            }
+                        },
                     ])
                     .then(internData => {
                         group.interns.push(new Intern(internData))
@@ -116,7 +218,7 @@ function createnewEmployee() {
             }
         })
 
-}
+};
 function confirmNewEmployee() {
     inquirer
         .prompt([
@@ -127,8 +229,8 @@ function confirmNewEmployee() {
                 default: true
             },
         ]).then(answer => {
-            return answer.newEmployeeConfirm
+            return answer.newEmployeeConfirm;
         })
-}
+};
 
 promptQuestions();
