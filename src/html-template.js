@@ -2,10 +2,10 @@
 
 
 module.exports = group => {
-    console.log(group.manager.getRole())
+    console.log(group)
     return `
     
-    
+
     `
 }
 // `
