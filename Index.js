@@ -4,7 +4,8 @@ const inquirer = require('inquirer');
 const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
-const generateHTML = require('./src/html-template');
+const templateHtml = require('./src/html-template');
+const generatePages = require('./utils/generate-pages')
 
 const group = {
     manager: {},
@@ -39,6 +40,7 @@ function promptQuestions() {
                 type: 'number',
                 name: 'id',
                 message: 'Enter Id# only:',
+                when: ({ managerConfirm }) => managerConfirm,
                 validate: idNumber => {
                     if (idNumber) {
                         return true;
@@ -52,6 +54,7 @@ function promptQuestions() {
                 type: 'input',
                 name: 'email',
                 message: 'Enter full email address:',
+                when: ({ managerConfirm }) => managerConfirm,
                 validate: emailInput => {
                     if (emailInput) {
                         return true;
@@ -65,6 +68,7 @@ function promptQuestions() {
                 type: 'number',
                 name: 'officeNumber',
                 message: 'Enter their office number - only numbers',
+                when: ({ managerConfirm }) => managerConfirm,
                 validate: phoneNumber => {
                     if (phoneNumber) {
                         return true;
@@ -78,12 +82,13 @@ function promptQuestions() {
             group.manager = new Manager(managerData.manager, managerData.id, managerData.email, managerData.officeNumber)
             console.log(group.manager.getRole());
             //generateHTML(group);
-            var enterCreationLoop = confirmNewEmployee();
-            while (enterCreationLoop) {
-                createnewEmployee();
-                enterCreationLoop = confirmNewEmployee();
-            }
-        })
+            // let enterCreationLoop = confirmNewEmployee();
+            // console.log("this is ecl", enterCreationLoop)
+            // while (enterCreationLoop) {
+            //     createnewEmployee();
+            //     enterCreationLoop = confirmNewEmployee();
+            // }
+        }).then(confirmNewEmployee)
 };
 
 function createnewEmployee() {
@@ -94,7 +99,7 @@ function createnewEmployee() {
                 name: 'employeeType',
                 message: 'Choose an employee type',
                 choices: ['Engineer', 'Intern'],
-                when: ({ newEmployeeConfirm }) => newEmployeeConfirm
+                //when: ({ newEmployeeConfirm }) => newEmployeeConfirm
             }
         ]).then(employeeData => {
             if (employeeData.employeeType === 'Engineer') {
@@ -102,7 +107,7 @@ function createnewEmployee() {
                     .prompt([
                         {
                             type: 'input',
-                            name: 'engineer',
+                            name: 'name',
                             message: 'Write name of the Engineer:',
                             validate: nameInput => {
                                 if (nameInput) {
@@ -154,14 +159,14 @@ function createnewEmployee() {
                         },
                     ])
                     .then(engineerData => {
-                        group.engineers.push(new Engineer(engineerData))
-                    })
+                        group.engineers.push(new Engineer(engineerData.name, engineerData.id, engineerData.email, engineerData.github))
+                    }).then(confirmNewEmployee)
             } else if (employeeData.employeeType === 'Intern') {
                 inquirer
                     .prompt([
                         {
                             type: 'input',
-                            name: 'manager',
+                            name: 'name',
                             message: 'Write name of the Intern:',
                             validate: nameInput => {
                                 if (nameInput) {
@@ -213,8 +218,9 @@ function createnewEmployee() {
                         },
                     ])
                     .then(internData => {
-                        group.interns.push(new Intern(internData))
+                        group.interns.push(new Intern(internData.name, internData.id, internData.email, internData.school))
                     })
+                    .then(confirmNewEmployee)
             }
         })
 
@@ -229,8 +235,27 @@ function confirmNewEmployee() {
                 default: true
             },
         ]).then(answer => {
-            return answer.newEmployeeConfirm;
+            if (answer.newEmployeeConfirm === true) {
+                createnewEmployee();
+            }
+            else if (answer.newEmployeeConfirm === false) {
+                createDocs();
+            }
         })
 };
+
+function createDocs() {
+    templateHtml(group)
+    .then(pageHTML => {
+        return writeFile(pageHTML);
+    })
+    .then(writeFileResponse => {
+        console.log(writeFileResponse);
+        return copyFile();
+    })
+    .catch(err => {
+        console.log(err);
+    })
+}
 
 promptQuestions();
