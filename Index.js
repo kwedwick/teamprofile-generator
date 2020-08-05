@@ -80,11 +80,14 @@ function promptQuestions() {
                 }
             }
         ]).then(managerData => {
+            if (managerData.managerConfirm === true){
             group.manager = new Manager(managerData.manager, managerData.id, managerData.email, managerData.officeNumber)
             console.log(group.manager.getRole());
+        }
         }).then(confirmNewEmployee)
 };
 
+//creates both Intern and Employee
 function createnewEmployee() {
     inquirer
         .prompt([
@@ -237,6 +240,24 @@ function confirmNewEmployee() {
         })
 };
 
+
+function createDocs() {
+    var data = templateHtml(group);
+    writeFile(data)
+        .then(writeFileResponse => {
+            console.log(writeFileResponse);
+            return copyFile();
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+promptQuestions();
+
+
+
+
 // function createDocs() {
 //     templateHtml(group)
 //     .then(pageHTML => {
@@ -250,17 +271,3 @@ function confirmNewEmployee() {
     //     console.log(err);
     // })
 // }
-
-function createDocs() {
-    var data = templateHtml(group);
-    writeFile(data)
-    .then(writeFileResponse => {
-        console.log(writeFileResponse);
-        return copyFile();
-    })
-    .catch(err => {
-        console.log(err);
-    })
-}
-
-promptQuestions();

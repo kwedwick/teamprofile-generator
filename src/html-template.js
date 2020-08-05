@@ -2,19 +2,17 @@
 
 
 const generateManager = (manager) => {
-    if (manager.length === 0) {
+    if (Object.entries(manager).length === 0) {
         return '';
     }
-    const {name, id, email, officeNumber} = manager;
-    return `
-        <div class="card-body">
-            <h3 class="card-title">${name}</h3>
-            <h4 class="card-subtitle mb-2 text-muted">${manager.getRole()}</h4>
-            <p class="card-text">ID: ${id}</p>
-            <a href="mailto:${email}">Email: ${email}</a>
-            <p class="card-text">Phone#: ${officeNumber}<p>
-        </div>
-    `
+    const { name, id, email, officeNumber } = manager;
+    return `<div class="card-body">
+                        <h3 class="card-title">${manager.getName()}</h3>
+                        <h4 class="card-subtitle mb-2 text-muted">${manager.getRole()}</h4>
+                        <p class="card-text">${manager.getId()}</p>
+                        <p class="card-text">Email: <a href="mailto:${email}">${email}</a></p>
+                        <p class="card-text">Office#: ${officeNumber}</p>
+                    </div>`
 };
 
 
@@ -23,37 +21,41 @@ const generateEngineers = (engineers) => {
     if (engineers.length === 0) {
         return '';
     }
-    const {name, id, email, github} = engineers
     return `
-    <div class="card-body">
-        <h3 class="card-title">${name}</h3>
-        <h4 class="card-subtitle mb-2 text-muted">${engineers.getRole()}</h4>
-        <p class="card-text">ID: ${id}</p>
-        <a href="mailto:${email}">Email: ${email}</a>
-        <a href="${engineers.getGithub()}">Github Profile: ${github}<p>
-    </div>
-`
-
-
+            <h2>Engineers</h2>
+            <div id="engineerContainer" class="row">
+${engineers.map(engineer =>
+`           <div id="engineerCardContainer" class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">${engineer.getName()}</h3>
+                        <h4 class="card-subtitle mb-2 text-muted">${engineer.getRole()}</h4>
+                        <p class="card-text">${engineer.getId()}</p>
+                        <p class="card-text">Email: <a href="mailto:${engineer.email}">${engineer.email}</a></p>
+                        <p class="card-text">GitHub Profile: <a href="${engineer.getGithub()}">${engineer.github}</a></p>
+                    </div>
+                </div>`).join('')}
+            </div>`;
 }
+
 
 const generateInterns = (interns) => {
     if (interns.length === 0) {
         return '';
     }
-    const {name, id, email, school} = interns
     return `
-    ${interns.forEach(intern =>
-    `<div class="card-body">
-        <h3 class="card-title">${intern.name}</h3>
-        <h4 class="card-subtitle mb-2 text-muted">${intern.getRole()}</h4>
-        <p class="card-text">ID: ${intern.id}</p>
-        <a href="mailto:${intern.email}">Email: ${intern.email}</a>
-        <p class="card-text">${intern.getSchool()}<p>
-    </div>
-    `
-    )}
-`
+            <h2>Interns</h2>
+            <div id="internContainer" class="row">
+${interns.map(intern =>
+`           <div id="internCardContainer" class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">${intern.getName()}</h3>
+                        <h4 class="card-subtitle mb-2 text-muted">${intern.getRole()}</h4>
+                        <p class="card-text">${intern.getId()}</p>
+                        <p class="card-text">Email: <a href="mailto:${intern.email}">${intern.email}</a></p>
+                        <p class="card-text">${intern.getSchool()}</p>
+                    </div>
+                </div>`).join('')}
+            </div>`;
 }
 
 
@@ -83,21 +85,16 @@ module.exports = group => {
                     ${generateManager(group.manager)}
                 </div>
             </div>
-            <div id="engineerContainer" class="row">
-                <div id="engineerCardContainer" class="card">
-                    ${generateEngineers(group.engineers)}
-                </div>
-            </div>
-            <div id="internContainer" class="row">
-                <div id="internCardContainer" class="card">
-                    ${generateInterns(group.interns)}
-                </div>
-            </div>
+
+            ${generateEngineers(group.engineers)}
+            
+            ${generateInterns(group.interns)}
+
         </div>
     </main>
 </body>
 
 </html>
-    `
+`
 };
 
