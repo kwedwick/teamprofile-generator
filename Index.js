@@ -82,13 +82,6 @@ function promptQuestions() {
         ]).then(managerData => {
             group.manager = new Manager(managerData.manager, managerData.id, managerData.email, managerData.officeNumber)
             console.log(group.manager.getRole());
-            //generateHTML(group);
-            // let enterCreationLoop = confirmNewEmployee();
-            // console.log("this is ecl", enterCreationLoop)
-            // while (enterCreationLoop) {
-            //     createnewEmployee();
-            //     enterCreationLoop = confirmNewEmployee();
-            // }
         }).then(confirmNewEmployee)
 };
 
@@ -100,7 +93,6 @@ function createnewEmployee() {
                 name: 'employeeType',
                 message: 'Choose an employee type',
                 choices: ['Engineer', 'Intern'],
-                //when: ({ newEmployeeConfirm }) => newEmployeeConfirm
             }
         ]).then(employeeData => {
             if (employeeData.employeeType === 'Engineer') {
