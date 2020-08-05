@@ -5,7 +5,8 @@ const Manager = require('./lib/Manager');
 const Intern = require('./lib/Intern');
 const Engineer = require('./lib/Engineer');
 const templateHtml = require('./src/html-template');
-const generatePages = require('./utils/generate-pages')
+const generatePages = require('./utils/generate-pages');
+const { writeFile, copyFile } = require('./utils/generate-pages');
 
 const group = {
     manager: {},
@@ -244,11 +245,23 @@ function confirmNewEmployee() {
         })
 };
 
+// function createDocs() {
+//     templateHtml(group)
+//     .then(pageHTML => {
+//         return writeFile(pageHTML);
+//     })
+    // .then(writeFileResponse => {
+    //     console.log(writeFileResponse);
+    //     return copyFile();
+    // })
+    // .catch(err => {
+    //     console.log(err);
+    // })
+// }
+
 function createDocs() {
-    templateHtml(group)
-    .then(pageHTML => {
-        return writeFile(pageHTML);
-    })
+    var data = templateHtml(group);
+    writeFile(data)
     .then(writeFileResponse => {
         console.log(writeFileResponse);
         return copyFile();
