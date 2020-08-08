@@ -1,0 +1,13 @@
+/*style sheet to copy over*/
+* {
+    box-sizing: border-box
+}
+
+header h1{
+    padding: 20px;
+    border-bottom: 2px solid black;
+}
+
+.card {
+    margin: 10px;
+}
